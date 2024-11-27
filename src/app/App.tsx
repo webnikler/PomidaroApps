@@ -11,7 +11,7 @@ const App = () => {
         <IconOpenInNew />
         <span>Подробнее</span>
       </Button>
-      <Button>
+      <Button fullwidth>
         <span>Подробнее</span>
       </Button>
       <Button size='sm'>

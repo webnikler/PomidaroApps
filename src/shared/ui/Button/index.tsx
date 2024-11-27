@@ -15,6 +15,7 @@ const buttonVariants = cva(
     'disabled:shadow-none',
     'overflow-hidden',
     'relative',
+    'shrink-0',
   ],
   {
     variants: {
@@ -29,6 +30,9 @@ const buttonVariants = cva(
       shape: {
         circle: ['rounded-full'],
         rect: ['rounded'],
+      },
+      fullwidth: {
+        true: ['w-full', 'shrink'],
       },
     },
     compoundVariants: [
@@ -64,11 +68,14 @@ interface Props
 export type ButtonProps = PropsWithChildren<Props>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ disabled, loading, children, variant, size, shape, ...rest }, ref) => {
+  (
+    { disabled, loading, children, variant, size, shape, fullwidth, ...rest },
+    ref,
+  ) => {
     return (
       <button
         ref={ref}
-        className={twMerge(buttonVariants({ variant, size, shape }))}
+        className={twMerge(buttonVariants({ variant, size, shape, fullwidth }))}
         disabled={disabled || loading}
         {...rest}
       >
