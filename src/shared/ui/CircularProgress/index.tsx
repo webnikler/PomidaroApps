@@ -1,15 +1,15 @@
-import { PropsWithChildren, useLayoutEffect, useState } from 'react';
+import { CSSProperties, PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
   progress?: number;
   size?: number;
   strokeWidth?: number;
-  backLineColor?: string;
-  frontLineColor?: string;
+  backLineColor?: CSSProperties['color'];
+  frontLineColor?: CSSProperties['color'];
+  innerBackground?: CSSProperties['color'];
   backLineClass?: string;
   frontLineClass?: string;
-  innerBackground?: string;
 }
 
 export type CircularProgressProps = PropsWithChildren<Props>;
@@ -21,20 +21,15 @@ export const CircularProgress = ({
   progress = 0,
   backLineClass = 'stroke-gray-200',
   frontLineClass = 'stroke-purple-800',
-  backLineColor,
-  frontLineColor,
+  backLineColor = 'none',
+  frontLineColor = 'none',
   children,
 }: CircularProgressProps) => {
-  const [offset, setOffset] = useState(0);
-
   const center = size / 2;
   const radius = center - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
-
-  useLayoutEffect(() => {
-    const limitedProgress = progress > 100 ? 100 : progress < 0 ? 0 : progress;
-    setOffset(((100 - limitedProgress) / 100) * circumference);
-  }, [offset, setOffset, progress, circumference]);
+  const limitedProgress = progress > 100 ? 100 : progress < 0 ? 0 : progress;
+  const offset = ((100 - limitedProgress) / 100) * circumference;
 
   return (
     <div className='relative'>
