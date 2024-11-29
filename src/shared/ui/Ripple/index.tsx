@@ -25,7 +25,6 @@ export const Ripple = memo(
       let timeout: ReturnType<typeof setTimeout>;
 
       if (ripples.length > 0) {
-        clearTimeout(timeout!);
         timeout = setTimeout(
           () => [setRipples([]), clearTimeout(timeout)],
           duration * 4,
