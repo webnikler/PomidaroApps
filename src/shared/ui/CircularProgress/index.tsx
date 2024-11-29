@@ -21,8 +21,8 @@ export const CircularProgress = ({
   progress = 0,
   backLineClass = 'stroke-gray-200',
   frontLineClass = 'stroke-purple-800',
-  backLineColor = 'none',
-  frontLineColor = 'none',
+  backLineColor,
+  frontLineColor,
   children,
 }: CircularProgressProps) => {
   const center = size / 2;
