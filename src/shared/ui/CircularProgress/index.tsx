@@ -8,8 +8,9 @@ interface Props {
   backLineColor?: CSSProperties['color'];
   frontLineColor?: CSSProperties['color'];
   innerBackground?: CSSProperties['color'];
-  backLineClass?: string;
-  frontLineClass?: string;
+  backLineClass?: string | false;
+  frontLineClass?: string | false;
+  className?: string;
 }
 
 export type CircularProgressProps = PropsWithChildren<Props>;
@@ -19,10 +20,11 @@ export const CircularProgress = ({
   strokeWidth = 2.5,
   innerBackground = 'none',
   progress = 0,
-  backLineClass = 'stroke-gray-200',
-  frontLineClass = 'stroke-purple-800',
+  backLineClass,
+  frontLineClass,
   backLineColor,
   frontLineColor,
+  className,
   children,
 }: CircularProgressProps) => {
   const center = size / 2;
@@ -32,11 +34,11 @@ export const CircularProgress = ({
   const offset = ((100 - limitedProgress) / 100) * circumference;
 
   return (
-    <div className='relative'>
+    <div className={twMerge('relative inline-block', className)}>
       <svg className='block' width={size} height={size}>
         <circle
           fill={innerBackground}
-          className={backLineClass}
+          className={twMerge('fill-none stroke-gray-300', backLineClass)}
           style={{ stroke: backLineColor }}
           cx={center}
           cy={center}
@@ -45,7 +47,8 @@ export const CircularProgress = ({
         />
         <circle
           className={twMerge(
-            'origin-center -rotate-90 fill-none transition-[stroke-dashoffset] duration-700 ease-in-out',
+            'origin-center -rotate-90 fill-none stroke-purple-800',
+            'transition-[stroke-dashoffset] duration-700 ease-in-out',
             frontLineClass,
           )}
           style={{ stroke: frontLineColor }}
