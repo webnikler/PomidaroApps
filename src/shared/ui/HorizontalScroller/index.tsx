@@ -8,7 +8,7 @@ import {
 import Button from '../Button';
 import { IconChevronLeft, IconChevronRight } from '../Icon';
 import { twMerge } from 'tailwind-merge';
-import useResizeObserver from '@react-hook/resize-observer';
+import { useDebounceCallback, useResizeObserver } from 'usehooks-ts';
 
 interface Props {
   controls?: boolean;
@@ -30,6 +30,8 @@ export const HorizontalScroller = ({
   const [controlsVisible, setControlsVisible] = useState(false);
   const scrollContentRef = useRef<HTMLDivElement>(null);
 
+  const showControls = controls && controlsVisible;
+
   const handleScroll = ({ currentTarget }: UIEvent<HTMLDivElement>) => {
     const { scrollLeft, scrollWidth, clientWidth } = currentTarget;
 
@@ -42,19 +44,12 @@ export const HorizontalScroller = ({
     }
   };
 
-  useResizeObserver(
-    scrollContentRef.current,
-    ({ target: { scrollWidth, clientWidth } }) => {
-      setControlsVisible(Boolean(scrollWidth - clientWidth));
-    },
-  );
-
-  useLayoutEffect(() => {
+  const handleResize = useDebounceCallback(() => {
     if (!scrollContentRef.current) return;
 
     const { scrollWidth, clientWidth } = scrollContentRef.current;
     setControlsVisible(Boolean(scrollWidth - clientWidth));
-  }, []);
+  }, 50);
 
   const scrollTo = (direction: 'left' | 'right') => () => {
     if (!scrollContentRef.current) return;
@@ -71,7 +66,14 @@ export const HorizontalScroller = ({
     });
   };
 
-  const showControls = controls && controlsVisible;
+  useLayoutEffect(() => {
+    if (!scrollContentRef.current) return;
+
+    const { scrollWidth, clientWidth } = scrollContentRef.current;
+    setControlsVisible(Boolean(scrollWidth - clientWidth));
+  }, []);
+
+  useResizeObserver({ ref: scrollContentRef, onResize: handleResize });
 
   return (
     <div className='flex w-full items-center'>
