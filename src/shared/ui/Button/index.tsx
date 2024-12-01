@@ -3,6 +3,7 @@ import { ComponentProps, forwardRef, PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { Ripple } from '../Ripple';
 
+// @todo - replace with tailwind-variants
 const buttonVariants = cva(
   [
     'flex',
@@ -22,6 +23,7 @@ const buttonVariants = cva(
       variant: {
         primary: ['bg-indigo-800', 'text-white', 'active:bg-indigo-900'],
         secondary: [], // todo
+        inherit: ['bg-transparent', 'shadow-none', 'disabled:bg-transparent'],
       },
       size: {
         md: ['px-4', 'h-9', 'text-sm'],
@@ -63,23 +65,48 @@ interface Props
   extends ComponentProps<'button'>,
     VariantProps<typeof buttonVariants> {
   loading?: boolean;
+  ripple?: boolean;
 }
 
 export type ButtonProps = PropsWithChildren<Props>;
 
+const RIPPLE_COLOR_DARK = 'rgba(0,0,0,.5)';
+const RIPPLE_COLOR_LIGHT = 'rgba(255,255,255,.5)';
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { disabled, loading, children, variant, size, shape, fullwidth, ...rest },
+    {
+      ripple = true,
+      disabled,
+      loading,
+      children,
+      variant,
+      size,
+      shape,
+      fullwidth,
+      className,
+      ...rest
+    },
     ref,
   ) => {
     return (
       <button
         ref={ref}
-        className={twMerge(buttonVariants({ variant, size, shape, fullwidth }))}
+        className={twMerge(
+          buttonVariants({ variant, size, shape, fullwidth }),
+          className,
+        )}
         disabled={disabled || loading}
         {...rest}
       >
-        <Ripple fromCenter={shape === 'circle'} />
+        {ripple && (
+          <Ripple
+            color={
+              variant === 'inherit' ? RIPPLE_COLOR_DARK : RIPPLE_COLOR_LIGHT
+            }
+            fromCenter={shape === 'circle'}
+          />
+        )}
         {children}
       </button>
     );

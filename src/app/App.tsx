@@ -1,49 +1,69 @@
-import { useState } from 'react';
-import Button from '../shared/ui/Button';
-import { IconOpenInNew } from '../shared/ui/Icon';
-import { CircularProgress } from '../shared/ui/CircularProgress';
+import { IconFlag } from '../shared/ui/Icon';
+import ProgressNavigation from '../shared/ui/ProgressNavigation';
 
 const App = () => {
-  const [disabled, setDisabled] = useState(false);
-  const [progress, setProgress] = useState(50);
-
   return (
-    <>
-      <div className='m-4 flex gap-4'>
-        <Button disabled={disabled} onClick={() => setDisabled(true)}>
-          <IconOpenInNew />
-          <span>Подробнее</span>
-        </Button>
-        <Button fullwidth>
-          <span>Подробнее</span>
-        </Button>
-        <Button size='sm'>
-          <IconOpenInNew />
-          <span>Подробнее</span>
-        </Button>
-
-        <Button shape='circle'>
-          <IconOpenInNew />
-        </Button>
-        <Button size='sm' shape='circle'>
-          <IconOpenInNew />
-        </Button>
-        <Button shape='circle' onClick={() => setProgress((p) => p + 10)}>
-          +
-        </Button>
-        <Button shape='circle' onClick={() => setProgress((p) => p - 10)}>
-          -
-        </Button>
-      </div>
-      <div className='m-4 flex gap-4'>
-        <CircularProgress size={160} strokeWidth={12} progress={progress}>
-          <span>Progress is {progress}</span>
-        </CircularProgress>
-        <CircularProgress progress={progress} />
-        <CircularProgress frontLineClass='stroke-red-700' progress={progress} />
-        <CircularProgress frontLineColor='green' progress={progress} />
-      </div>
-    </>
+    <div className='m-4 bg-gray-100 p-4'>
+      <ProgressNavigation activeId={3} onChange={console.log}>
+        <ProgressNavigation.Item
+          itemId={0}
+          progress={100}
+          title='15 сент'
+          subtitle='понедельник'
+        />
+        <ProgressNavigation.Item
+          itemId={1}
+          progress={100}
+          title='16 сент'
+          subtitle='вторник'
+        />
+        <ProgressNavigation.Item
+          itemId={2}
+          progress={100}
+          title='17 сент'
+          subtitle='среда'
+        />
+        <ProgressNavigation.Item
+          itemId={3}
+          progress={35}
+          title='18 сент'
+          subtitle='четверг'
+        />
+        <ProgressNavigation.Item
+          itemId={4}
+          progress={75}
+          title='19 сент'
+          subtitle='пятница'
+        />
+        <ProgressNavigation.Item
+          itemId={5}
+          progress={100}
+          title='20 сент 🌴'
+          subtitle='суббота'
+        />
+        <ProgressNavigation.Item
+          itemId={6}
+          progress={0}
+          disabled
+          title='21 сент 🌴'
+          subtitle='воскресенье'
+        />
+        <ProgressNavigation.Item
+          itemId={7}
+          progress={0}
+          disabled
+          title='22 сент'
+          subtitle='понедельник'
+        />
+        <ProgressNavigation.Item
+          completedIcon={<IconFlag />}
+          disabled
+          onlyIcon
+          itemId={8}
+          progress={100}
+        />
+      </ProgressNavigation>
+    </div>
   );
 };
 

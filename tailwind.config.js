@@ -12,6 +12,9 @@ export default {
       animation: {
         ripple: 'ripple',
       },
+      fontSize: {
+        xxs: 10,
+      },
     },
   },
   plugins: [],
