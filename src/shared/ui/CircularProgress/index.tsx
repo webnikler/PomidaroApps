@@ -47,8 +47,7 @@ export const CircularProgress = ({
         />
         <circle
           className={twMerge(
-            'origin-center -rotate-90 fill-none stroke-purple-800',
-            'transition-[stroke-dashoffset] duration-700 ease-in-out',
+            'origin-center -rotate-90 fill-none stroke-purple-800 transition-[stroke-dashoffset] duration-700 ease-in-out',
             frontLineClass,
           )}
           style={{ stroke: frontLineColor }}

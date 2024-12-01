@@ -97,7 +97,7 @@ export const ProgressNavigationItem = forwardRef<
 
     useEffect(() => {
       if (active) localRef.current?.scrollIntoView({ inline: 'center' });
-    }, [active, itemId, setActiveId]);
+    }, [active]);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
       setActiveId(itemId);
@@ -109,10 +109,7 @@ export const ProgressNavigationItem = forwardRef<
         ref={localRef}
         disabled={disabled}
         className={twMerge(
-          'relative flex w-full min-w-20 flex-col gap-2',
-          'overflow-hidden rounded-lg p-2 pr-0',
-          'transition-colors duration-500',
-          'snap-center first:snap-start last:snap-end',
+          'relative flex w-full min-w-20 snap-center flex-col gap-2 overflow-hidden rounded-lg p-2 pr-0 transition-colors duration-500 first:snap-start last:snap-end',
           active && 'bg-gray-200',
           onlyIcon && 'size-10 min-w-10 shrink-0',
           className,
@@ -129,9 +126,7 @@ export const ProgressNavigationItem = forwardRef<
           >
             {completed ? completedIcon : uncompletedIcon}
           </CircularProgress>
-          {showLine && (
-            <div className='h-[2px] w-full rounded-sm bg-gray-300' />
-          )}
+          {showLine && <div className='h-0.5 w-full rounded-sm bg-gray-300' />}
         </div>
         <div className='flex max-w-full flex-col items-start'>
           <span
