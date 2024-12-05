@@ -15,6 +15,9 @@ export default {
       fontSize: {
         xxs: 10,
       },
+      transitionProperty: {
+        d: 'd',
+      },
     },
   },
   plugins: [],

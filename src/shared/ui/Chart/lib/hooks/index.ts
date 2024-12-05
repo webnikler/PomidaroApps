@@ -1,0 +1,1 @@
+export { useLineScale } from './useLineScale';
