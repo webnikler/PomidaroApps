@@ -11,9 +11,9 @@ export const useLine = ({ data, curve = DEFAULT_CURVE }: LineChartProps) => {
     () =>
       d3
         .line<LineChartDataItem>()
-        .x((d) => xScale(d.label) as number)
+        .x((d) => xScale(d.label) ?? 0)
         .y((d) => yScale(d.value))
-        .curve(curve)(data) as string,
+        .curve(curve)(data) ?? '',
     [data, xScale, yScale, curve],
   );
 };

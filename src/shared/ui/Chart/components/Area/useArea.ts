@@ -16,7 +16,7 @@ export const useArea = ({ data, curve = DEFAULT_CURVE }: LineChartProps) => {
         .x((d) => xScale(d.label) ?? 0)
         .y0(height)
         .y1((d) => yScale(d.value))
-        .curve(curve)(data) as string,
+        .curve(curve)(data) ?? '',
     [height, xScale, yScale, data, curve],
   );
 };

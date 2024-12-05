@@ -38,7 +38,7 @@ export const useLineScale = (data: LineChartData) => {
 
   useLayoutEffect(() => {
     const key = uuidv4();
-    const value = d3.max(data, (d) => d.value) as number;
+    const value = d3.max(data, (d) => d.value) ?? 0;
 
     setMaxValue(key, value);
 
