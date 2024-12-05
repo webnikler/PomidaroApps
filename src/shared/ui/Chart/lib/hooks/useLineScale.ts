@@ -2,8 +2,8 @@ import { useLayoutEffect, useMemo } from 'react';
 import * as d3 from 'd3';
 import { v4 as uuidv4 } from 'uuid';
 import type { LineChartData } from '../types';
-import { useChart } from '../context';
 import { LINE_CHART_MARGIN_TOP_PERCENT } from '../constants';
+import { useChart } from '../../components/Provider';
 
 export interface UseLineScaleOptions {
   width: number;
