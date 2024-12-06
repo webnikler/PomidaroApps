@@ -1,19 +1,32 @@
 import { useMemo } from 'react';
 import * as d3 from 'd3';
-import { DEFAULT_CURVE } from '../../lib/constants';
-import { useLineScale } from '../../lib/hooks';
-import { LineChartDataItem, LineChartProps } from '../../lib/types';
+import { useMaxValue, useScaleLinear, useScalePoint } from '../../lib/hooks';
 
-export const useLine = ({ data, curve = DEFAULT_CURVE }: LineChartProps) => {
-  const { xScale, yScale } = useLineScale(data);
+export interface UseLineArguments {
+  values: number[];
+  labels: string[];
+  curve?: d3.CurveFactory;
+}
 
-  return useMemo(
-    () =>
-      d3
-        .line<LineChartDataItem>()
-        .x((d) => xScale(d.label) ?? 0)
-        .y((d) => yScale(d.value))
-        .curve(curve)(data) ?? '',
-    [data, xScale, yScale, curve],
-  );
+export const useLine = ({
+  values,
+  labels,
+  curve = d3.curveMonotoneX,
+}: UseLineArguments) => {
+  const xScale = useScalePoint(labels);
+  const yScale = useScaleLinear(values);
+
+  const d = useMemo(() => {
+    const build = d3
+      .line<string>()
+      .y((_, i) => yScale(values[i]))
+      .x((d) => xScale(d) ?? 0)
+      .curve(curve);
+
+    return build(labels) ?? '';
+  }, [values, labels, xScale, yScale, curve]);
+
+  useMaxValue(values);
+
+  return { d };
 };

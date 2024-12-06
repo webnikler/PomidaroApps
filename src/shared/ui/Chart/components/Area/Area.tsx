@@ -1,15 +1,16 @@
-import { ComponentProps, forwardRef } from 'react';
-import { LineChartGradient, LineChartProps } from '../../lib/types';
-import { useArea } from './useArea';
+import { ComponentProps, CSSProperties, forwardRef } from 'react';
+import { useArea, UseAreaArguments } from './useArea';
 import { twMerge } from 'tailwind-merge';
 
-export interface AreaProps extends LineChartProps, ComponentProps<'path'> {
-  gradient?: LineChartGradient;
+export interface AreaProps
+  extends Omit<ComponentProps<'path'>, 'values'>,
+    UseAreaArguments {
+  gradient?: Record<number, CSSProperties['color']>;
 }
 
 export const Area = forwardRef<SVGPathElement, AreaProps>(
-  ({ className, data, fill, gradient, curve, ...rest }, ref) => {
-    const d = useArea({ data, curve });
+  ({ className, values, labels, fill, gradient, curve, ...rest }, ref) => {
+    const { d } = useArea({ values, labels, curve });
 
     return (
       <>
@@ -36,3 +37,5 @@ export const Area = forwardRef<SVGPathElement, AreaProps>(
     );
   },
 );
+
+Area.displayName = 'Area';

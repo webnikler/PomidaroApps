@@ -26,12 +26,10 @@ export const useChart = () => useContext(ChartContext);
 
 export const ChartProvider = forwardRef<SVGSVGElement, ChartProviderProps>(
   ({ width, height, children, ...rest }, ref) => {
-    const { setMaxValue, removeMaxValue, maxValue } = useMaxValueStore();
+    const maxValueOptions = useMaxValueStore();
 
     return (
-      <ChartContext.Provider
-        value={{ width, height, maxValue, setMaxValue, removeMaxValue }}
-      >
+      <ChartContext.Provider value={{ width, height, ...maxValueOptions }}>
         <svg
           ref={ref}
           viewBox={`0 0 ${width} ${height}`}

@@ -1,13 +1,14 @@
 import { ComponentProps, forwardRef } from 'react';
-import { LineChartProps } from '../../lib/types';
-import { useLine } from './useLine';
+import { useLine, UseLineArguments } from './useLine';
 import { twMerge } from 'tailwind-merge';
 
-export interface LineProps extends LineChartProps, ComponentProps<'path'> {}
+export interface LineProps
+  extends Omit<ComponentProps<'path'>, 'values'>,
+    UseLineArguments {}
 
 export const Line = forwardRef<SVGPathElement, LineProps>(
-  ({ className, data, curve, ...rest }, ref) => {
-    const d = useLine({ data, curve });
+  ({ className, values, labels, curve, ...rest }, ref) => {
+    const { d } = useLine({ values, labels, curve });
 
     return (
       <path
@@ -22,3 +23,5 @@ export const Line = forwardRef<SVGPathElement, LineProps>(
     );
   },
 );
+
+Line.displayName = 'Line';

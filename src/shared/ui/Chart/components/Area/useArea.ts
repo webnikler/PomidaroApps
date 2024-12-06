@@ -1,22 +1,35 @@
 import { useMemo } from 'react';
 import * as d3 from 'd3';
-import { DEFAULT_CURVE } from '../../lib/constants';
-import { useLineScale } from '../../lib/hooks';
-import { LineChartDataItem, LineChartProps } from '../../lib/types';
+import { useMaxValue, useScaleLinear, useScalePoint } from '../../lib/hooks';
 import { useChart } from '../Provider';
 
-export const useArea = ({ data, curve = DEFAULT_CURVE }: LineChartProps) => {
-  const { height } = useChart();
-  const { xScale, yScale } = useLineScale(data);
+export interface UseAreaArguments {
+  values: number[];
+  labels: string[];
+  curve?: d3.CurveFactory;
+}
 
-  return useMemo(
-    () =>
-      d3
-        .area<LineChartDataItem>()
-        .x((d) => xScale(d.label) ?? 0)
-        .y0(height)
-        .y1((d) => yScale(d.value))
-        .curve(curve)(data) ?? '',
-    [height, xScale, yScale, data, curve],
-  );
+export const useArea = ({
+  values,
+  labels,
+  curve = d3.curveMonotoneX,
+}: UseAreaArguments) => {
+  const xScale = useScalePoint(labels);
+  const yScale = useScaleLinear(values);
+  const { height } = useChart();
+
+  const d = useMemo(() => {
+    const build = d3
+      .area<string>()
+      .x((d) => xScale(d) ?? 0)
+      .y0(height)
+      .y1((_, i) => yScale(values[i]))
+      .curve(curve);
+
+    return build(labels) ?? '';
+  }, [values, labels, xScale, yScale, curve, height]);
+
+  useMaxValue(values);
+
+  return { d };
 };
